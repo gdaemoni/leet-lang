@@ -5,6 +5,7 @@ from pathlib import Path
 import convertor
 from convertor.decode_convertor import Decoder
 from convertor.trash_generator import Trasher
+from convertor.encode_convertor import Encoder
 
 ROOT_PATH = Path(__file__).parent
 KEY_FILE = Path(os.path.dirname(convertor.__file__)) / 'key'
@@ -19,14 +20,11 @@ def assert_source_files():
 
 def decode_source():
     decoder = Decoder(KEY_FILE)
-    print(decoder._latter_mapper)
-    print(decoder.convert_text('7#!5 !5 4 7357 745|<'))
-    print(decoder.convert_text("\^/|2!73 7#3 |<3¥\^/0|2|)5 '#3110, #3><734|\/|' !|\| ¥0|_||2 |23|o1¥ 13773|2"))
-    # return decoder.convert_files(input_dir=SOURCE_DIR,
-    #                              input_mask='source*',
-    #                              output_dir=DECODED_DIR,
-    #                              input_prefix='source',
-    #                              output_prefix='decoded')
+    return decoder.convert_files(input_dir=SOURCE_DIR,
+                                 input_mask='source*',
+                                 output_dir=DECODED_DIR,
+                                 input_prefix='source',
+                                 output_prefix='decoded')
 
 
 def generate_trash_files():
@@ -39,15 +37,19 @@ def generate_trash_files():
 
 
 def encode_decoded_source():
-    # TODO: need to implement this functionality [3]
-    raise NotImplementedError('Not implemented [3]')
+    encoder = Encoder(KEY_FILE)
+    return encoder.convert_files(input_dir=DECODED_DIR,
+                                 input_mask='decoded*',
+                                 output_dir=ENCODED_DIR,
+                                 input_prefix='decoded',
+                                 output_prefix='encoded')
 
 
 def main():
     assert_source_files()
     decode_source()
-    generate_trash_files()
-    # encode_decoded_source()
+    # generate_trash_files()
+    encode_decoded_source()
 
 
 if __name__ == '__main__':
