@@ -5,3 +5,5 @@ decoded_sources
 build
 dist
 *.egg-info
+venv
+test

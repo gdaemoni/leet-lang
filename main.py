@@ -19,11 +19,14 @@ def assert_source_files():
 
 def decode_source():
     decoder = Decoder(KEY_FILE)
-    return decoder.convert_files(input_dir=SOURCE_DIR,
-                                 input_mask='source*',
-                                 output_dir=DECODED_DIR,
-                                 input_prefix='source',
-                                 output_prefix='decoded')
+    print(decoder._latter_mapper)
+    print(decoder.convert_text('7#!5 !5 4 7357 745|<'))
+    print(decoder.convert_text("\^/|2!73 7#3 |<3¥\^/0|2|)5 '#3110, #3><734|\/|' !|\| ¥0|_||2 |23|o1¥ 13773|2"))
+    # return decoder.convert_files(input_dir=SOURCE_DIR,
+    #                              input_mask='source*',
+    #                              output_dir=DECODED_DIR,
+    #                              input_prefix='source',
+    #                              output_prefix='decoded')
 
 
 def generate_trash_files():
