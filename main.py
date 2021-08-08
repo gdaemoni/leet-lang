@@ -48,7 +48,7 @@ def encode_decoded_source():
 def main():
     assert_source_files()
     decode_source()
-    # generate_trash_files()
+    generate_trash_files()
     encode_decoded_source()
 
 

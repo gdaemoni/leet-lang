@@ -8,8 +8,8 @@ setuptools.setup(
     version=__version__,
     description='This is a test leet task',
     zip_safe=False,
-    include_package_data=True,
     packages=setuptools.find_packages(),
+    include_package_data=True,
     entry_points={
         'console_scripts': [
             'leet-test-task-decode = convertor.__main__:decode',
@@ -17,3 +17,5 @@ setuptools.setup(
         ]
     },
 )
+
+

@@ -1,6 +1,7 @@
 import os
 from abc import ABC
 from typing import Dict
+import glob
 
 
 class AbstractFileConvertor(ABC):
@@ -10,6 +11,16 @@ class AbstractFileConvertor(ABC):
         assert key_file is None or os.path.isfile(key_file)
         self._latter_mapper = self._create_map(key_file)
 
+    @staticmethod
+    def _file_to_dict(file: str) -> dict[str, str]:
+        latter_mapper = {}
+
+        with open(file, "r") as f:
+            for line in f.readlines():
+                latter_mapper[line[0].lower()] = line[2:-1].replace(' ', '').split(',')[0]
+
+        return latter_mapper
+
     def _create_map(self, file: [str, ...], **kwargs) -> Dict[str, str]:
         """A method for generating map (dict) for encode/decode text
         :param file: the optional path to a file with text
@@ -18,12 +29,17 @@ class AbstractFileConvertor(ABC):
         raise NotImplementedError
 
     def convert_text(self, input_text: str) -> str:
+        raise NotImplementedError
+
+    def _convert_text(self, input_text: str) -> str:
         """A method for the convert the text
         (encode -> decode | decode -> encode)
         :param input_text: the text to convert
         :return: converted text
         """
-        raise NotImplementedError
+        for original, replace in self._latter_mapper.items():
+            input_text = input_text.replace(original, replace, -1)
+        return input_text
 
     @staticmethod
     def output_name_generator(input_file_name: str, input_prefix: str,
@@ -47,4 +63,15 @@ class AbstractFileConvertor(ABC):
         :param output_prefix: the output prefix for _output_name_generator
         :return: the list of converted strings
         """
-        raise NotImplementedError
+        os.makedirs(output_dir, exist_ok=True)
+        for file_name in glob.glob(os.path.join(input_dir, input_mask)):
+            output_name = self.output_name_generator(
+                file_name,
+                input_prefix,
+                output_prefix,
+                output_dir
+            )
+            with open(file_name) as file:
+                with open(output_name, "w") as outfile:
+                    convert_text = self.convert_text(file.read())
+                    outfile.write(convert_text)
